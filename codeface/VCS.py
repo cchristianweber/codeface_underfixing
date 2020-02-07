@@ -1326,7 +1326,7 @@ class gitVCS (VCS):
 
         try:
             file_analysis.run_analysis()
-        except Exception, e:
+        except Exception as e:
             log.warning("doxygen analysis error '{0}' - returning empty result".format(e))
             return {}, []
 
