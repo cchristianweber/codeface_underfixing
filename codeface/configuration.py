@@ -59,7 +59,7 @@ class Configuration(Mapping):
                 'idServicePort' : 8080
                 }
 
-	self._conf_file_loc = None
+        self._conf_file_loc = None
 
     @classmethod
     def load(self, global_conffile, local_conffile=None):
