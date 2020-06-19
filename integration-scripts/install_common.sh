@@ -26,11 +26,6 @@ if [ "${version}" = "16.04" ]; then
     sudo sed -i "s/\/var\/run\/mysqld\/mysqld.sock/\/tmp\/mysql.sock/g;" /etc/mysql/mysql.conf.d/mysqld.cnf
     sudo service mysql restart # Deleted /var/run/mysqld, so restart before creating the link
     sudo ln -s /tmp/mysql.sock /var/run/mysqld/mysqld.sock
-fi
-
-## Make sure that the nodejs binary exists (older distributions
-## might name the binary just node), and create an appropriate
-## symbolic link if required
-if [ ! -f /usr/bin/nodejs ]; then
-    sudo ln -s /usr/bin/node /usr/bin/nodejs
+else
+    echo "FIXME FIXME FIXME"
 fi
