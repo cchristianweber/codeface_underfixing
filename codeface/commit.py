@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Class to represent a commit (which may be composed of multiple diffs).
 # Since this class is serialised, it should be changed as little
 # as possible.
