@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # This file is part of Codeface. Codeface is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
@@ -20,10 +20,12 @@
 
 import yaml
 import os.path
-import kerninfo
+
 import pickle
 import argparse
 from datetime import datetime
+# import error kerninfo
+from codeface import kerninfo
 
 from .VCS import gitVCS
 from .commit_analysis import createCumulativeSeries, createSeries, \
