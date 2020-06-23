@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # This file is part of Codeface. Codeface is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
 # License as published by the Free Software Foundation, version 2.
@@ -20,7 +22,9 @@ The analysis is performed on a file by file basis. A commit can touch multiple
 files however this class considers a given commit only in the context of a
 single file.'''
 
-import commit
+# import error commit
+#import commit
+from codeface import commit
 import bisect
 
 
@@ -136,7 +140,9 @@ class FileCommit:
         return self.fileSnapShots
 
     def getFileSnapShot(self):
-        return self.fileSnapShots.values()[0]
+        #python 2 to 3
+        #return self.fileSnapShots.values()[0]
+        return list(self.fileSnapShots.values())[0]
 
     def getFilename(self):
         return self.filename
@@ -157,7 +163,9 @@ class FileCommit:
         self.functionIds.update(functionIds)
         for id in self.functionIds.values():
             self.functionImpl.update({id:[]})
-        self.functionLineNums.extend(sorted(self.functionIds.iterkeys()))
+        # python 2 to 3 
+        #self.functionLineNums.extend(sorted(self.functionIds.iterkeys()))
+        self.functionLineNums.extend(sorted(self.functionIds.keys()))
 
     def setSrcElems(self, src_elem_list):
         self._src_elem_list.extend(src_elem_list)
