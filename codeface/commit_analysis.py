@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Analysis methods to operate on lists of commits, and the associated
 # helper functions
 
@@ -21,7 +23,9 @@
 # Copyright 2010, 2011, 2012 by Wolfgang Mauerer <wm@linux-kernel.net>
 # All Rights Reserved.
 
-from TimeSeries import TimeSeries
+# import error TimeSeries
+#from TimeSeries import TimeSeries
+from codeface.TimeSeries import TimeSeries
 from logging import getLogger;
 from codeface.linktype import LinkType
 
