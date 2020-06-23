@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Subsystem characterisations for various Unix kernels
 # (following kerninfo.pm from the Perl scripts)
 
