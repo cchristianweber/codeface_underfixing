@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This file is part of Codeface. Codeface is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
 # License as published by the Free Software Foundation, version 2.
@@ -15,7 +16,13 @@
 # All Rights Reserved.
 
 import unittest
-import exceptions
+# import error exceptions python 2 to 3
+#import exceptions
+try:
+    import exceptions
+except ImportError:
+    import builtins as exceptions
+
 from logging import getLogger; log = getLogger("codeface.test.unit.batchjob")
 from time import sleep
 from random import random
@@ -93,8 +100,11 @@ class Testpool(unittest.TestCase):
         # exception. Maybe because it has been pickled?
         try:
             pool.join()
+            
         except Exception as e:
-            self.assertIn("IOError", str(e))
+            print('ASK AGAIN', e)
+            self.assertIn("FileNotFoundError", str(e))
+            #self.assertIn("IOError", str(e))
             raised = True
         self.assertEqual(raised, True)
 
