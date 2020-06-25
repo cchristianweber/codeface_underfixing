@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # This file is part of Codeface. Codeface is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
@@ -27,6 +27,7 @@ setup(name='codeface',
       packages=find_packages(exclude=['experiments']),
       package_data={'codeface': ['R/*.r', 'R/cluster/*.r', 'perl/*.pl']},
       entry_points={'console_scripts': ['codeface = codeface.cli:main']},
-      install_requires=['progressbar', 'VCS', 'python_ctags','PyYAML',
-                        'MySQL_python', 'jira']
+      #install_requires=['progressbar', 'python_ctags', 'PyYAML', 'jira']
+      install_requires=['progressbar', 'python_ctags3', 'PyYAML', 'jira', 'mysqlclient']
+      # 'VCS', 'MySQL_python', 'python_ctags3'
       )
