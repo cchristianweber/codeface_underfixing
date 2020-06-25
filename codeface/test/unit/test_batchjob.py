@@ -49,7 +49,6 @@ def ioerror_function():
 def unpickleable_error_function():
     class MyEx(Exception):
         def __init__(self):
-            print("HALLO")
             self.handle = NamedTemporaryFile(delete=True)
     raise MyEx()
 
