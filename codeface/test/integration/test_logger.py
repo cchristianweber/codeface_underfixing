@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This file is part of Codeface. Codeface is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
 # License as published by the Free Software Foundation, version 2.
@@ -19,7 +20,12 @@ import sys
 from os import unlink
 from logging import getLogger, INFO, DEBUG
 from tempfile import NamedTemporaryFile
-from StringIO import StringIO
+# import error StringIO python 2 to 3
+#from StringIO import StringIO
+try:
+    from io import StringIO ## for Python 3
+except ImportError:
+    from StringIO import StringIO ## for Python 2
 
 from codeface.logger import (set_log_level, start_logfile, stop_logfile,
         console_handler)
@@ -70,7 +76,9 @@ class TestLogger(unittest.TestCase):
 
     def testLogfile(self):
         '''Test logging into a logfile'''
-        f = NamedTemporaryFile(delete=False)
+        # python 2 to 3
+        #f = NamedTemporaryFile(delete=False)
+        f = NamedTemporaryFile(delete=False, mode='w')
         filename = f.name
         try:
             set_log_level('error') # avoid using the console logger
@@ -83,7 +91,9 @@ class TestLogger(unittest.TestCase):
             log.devinfo("Should be in logfile :-) ")
             log.warning("Should really be in logfile :-D ")
             stop_logfile(f.name)
-            contents = file(f.name).read()
+            #python 2 to 3
+            #contents = file(f.name).read()
+            contents = open(f.name).read()
             self.assertNotIn(":-(", contents)
             self.assertNotIn(":-P", contents)
             self.assertIn(":-)", contents)
