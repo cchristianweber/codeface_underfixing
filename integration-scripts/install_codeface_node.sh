@@ -4,9 +4,11 @@
 
 echo "Providing id_service"
 
-sudo DEBIAN_FRONTEND=noninteractive apt-get -qqy install npm
+#sudo DEBIAN_FRONTEND=noninteractive apt-get -qqy install npm
+sudo DEBIAN_FRONTEND=noninteractive apt -qy install nodejs-dev node-gyp libssl1.0-dev
+sudo DEBIAN_FRONTEND=noninteractive apt -qy install npm
 cd id_service
-sudo mkdir node_modules
+#sudo mkdir node_modules
 sudo chown vagrant.vagrant node_modules
 npm set ca null
 npm install --no-bin-links
