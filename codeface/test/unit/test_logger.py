@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This file is part of Codeface. Codeface is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
 # License as published by the Free Software Foundation, version 2.
@@ -17,7 +18,13 @@
 import unittest
 import logging
 
-from StringIO import StringIO
+# import error StringIO python 2 to 3
+#from StringIO import StringIO
+try:
+    from io import StringIO ## for Python 3
+except ImportError:
+    from StringIO import StringIO ## for Python 2
+
 from codeface.logger import (_insert_seqs, _remove_seqs,
         _loglevel_from_string, _get_log_handler, console_handler, log)
 
