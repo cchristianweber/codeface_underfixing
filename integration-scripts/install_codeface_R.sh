@@ -4,6 +4,7 @@
 
 echo "Providing R libraries"
 # try sudo add-apt-repository ppa:marutter/c2d4u3.5
+# install R 3.6.3 and handle dependecies
 #sudo apt-get update
 #sudo DEBIAN_FRONTEND=noninteractive apt-get -qqy install r-base r-base-dev r-base-core 
 sudo DEBIAN_FRONTEND=noninteractive apt -qy install r-base r-base-dev r-base-core
@@ -29,7 +30,7 @@ sudo DEBIAN_FRONTEND=noninteractive add-apt-repository -y ppa:cran/poppler
 sudo DEBIAN_FRONTEND=noninteractive apt-get -qy update
 sudo DEBIAN_FRONTEND=noninteractive apt install -qy libpoppler-cpp-dev
 # added because gdtools, units, error
-sudo DEBIAN_FRONTEND=noninteractive apt install -qy libcairo2-dev libudunits2-dev libmagick++-dev libgeos-dev libgdal-dev
+sudo DEBIAN_FRONTEND=noninteractive apt install -qy libcairo2-dev libudunits2-dev libmagick++-dev libgeos-dev libgdal-dev wordnet
 
 sudo Rscript packages.r
 # for test
