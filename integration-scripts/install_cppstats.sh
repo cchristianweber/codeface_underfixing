@@ -20,13 +20,17 @@ then
     echo "Could not download cppstats from ${CPPSTATS_URL}"
     exit 1
 fi
+# change to python 3 ????
 (cd ${TMPDIR} &&
     tar -xvf ${TMPDIR}/cppstats.tar.gz &&
     cd cppstats-${CPPSTATS_VERSION} &&
     sudo python setup.py install)
 
 echo "Providing srcML"
-SRCML_URL="http://131.123.42.38/lmcrs/beta/srcML-Ubuntu14.04-64.deb"
+# change to ubuntu 18.04
+#SRCML_URL="http://131.123.42.38/lmcrs/beta/srcML-Ubuntu14.04-64.deb"
+# http://131.123.42.38/lmcrs/v1.0.0/srcml_1.0.0-1_ubuntu18.04.deb
+SRCML_URL="http://131.123.42.38/lmcrs/v1.0.0/srcml_1.0.0-1_ubuntu18.04.deb"
 wget --quiet ${SRCML_URL} -O ${TMPDIR}/srcML.deb
 if [ ! -e ${TMPDIR}/srcML.deb ]
 then
