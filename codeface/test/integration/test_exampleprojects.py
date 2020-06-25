@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This file is part of Codeface. Codeface is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
 # License as published by the Free Software Foundation, version 2.
@@ -216,7 +217,9 @@ class EndToEndTestSetup(unittest.TestCase):
 
     def checkResult(self):
         results = self.getResults()
-        for table, res in results.iteritems():
+	#python 2 to 3
+        #for table, res in results.iteritems():
+        for table, res in results.items():
             if table in self.ignore_tables:
                 if len(res) == 0:
                     print ("Table not filled (expected): ", table)
