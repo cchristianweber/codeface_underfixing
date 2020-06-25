@@ -102,7 +102,6 @@ class Testpool(unittest.TestCase):
             pool.join()
             
         except Exception as e:
-            print('ASK AGAIN', e)
             self.assertIn("FileNotFoundError", str(e))
             #self.assertIn("IOError", str(e))
             raised = True
