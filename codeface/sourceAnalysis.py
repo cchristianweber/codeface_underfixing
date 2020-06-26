@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python3
 
 # This file is part of Codeface. Codeface is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
@@ -44,13 +44,18 @@ class FileAnalysis:
         output_dir = 'OUTPUT_DIRECTORY=' + self.outdir
         cmd_1 = ['cat', self.conf]
         p1 = Popen(cmd_1 ,stdout=PIPE)
-        doxy_conf = p1.communicate()[0]
+        #doxy_conf = p1.communicate()[0]
+        doxy_conf = p1.communicate()[0].decode('utf-8')
+        #print('doxy_conf', type(doxy_conf), type(input_file))
         doxy_conf = doxy_conf + input_file + '\n'
         doxy_conf = doxy_conf + output_dir
 
         cmd = 'doxygen -'
         cmd_2 = cmd.split()
         p2 = Popen(cmd_2, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        # python 2 to 3
+        doxy_conf = doxy_conf.encode('utf-8')
+
         p2.stdin.write(doxy_conf)
         # On rare occasions, doxygen may 'hang' on input files, not delivering
         # any result. Use a timeout to work around such situations
