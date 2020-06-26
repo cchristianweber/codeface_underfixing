@@ -48,7 +48,11 @@ compare.classification.test <- function() {
   degree.vec <- igraph::degree(g)[sample(seq_along(vertex.ids), length(vertex.ids))]
   commits <- unlist(sapply(vertex.ids, function(id) rep(id, degree.vec[id])))
   commit.df <- data.frame(author=commits)
-  class.centrality <- get.developer.class.centrality(edgelist, vertex.ids)
+  # R error  error: compare.classification returns expected values argument "source" is missing, with no default; added threshold
+  #class.centrality <- get.developer.class.centrality(edgelist, vertex.ids)
+  threshold <- 0.8
+
+  class.centrality <- get.developer.class.centrality(edgelist, vertex.ids, threshold)
   class.commit <- get.developer.class(count(commit.df, "author"))
   class.match <- compare.classification(class.centrality, class.commit)
   res <- all(class.match$total > 0 & class.match < 1)
