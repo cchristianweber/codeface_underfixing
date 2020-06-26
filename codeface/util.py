@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 ## This file is part of Codeface. Codeface is free software: you can
 ## redistribute it and/or modify it under the terms of the GNU General Public
 ## License as published by the Free Software Foundation, version 2.
@@ -35,7 +37,7 @@ from subprocess import Popen, PIPE
 from tempfile import NamedTemporaryFile, mkdtemp
 from time import sleep
 from threading import enumerate as threading_enumerate
-from Queue import Empty
+from queue import Empty
 from datetime import timedelta, datetime
 
 # Represents a job submitted to the batch pool.
@@ -43,7 +45,8 @@ BatchJobTuple = namedtuple('BatchJobTuple', ['id', 'func', 'args', 'kwargs',
         'deps', 'startmsg', 'endmsg'])
 class BatchJob(BatchJobTuple):
     def __init__(self, *args, **kwargs):
-        super(BatchJob, self).__init__(*args, **kwargs)
+        #super(BatchJob, self).__init__(*args, **kwargs)
+        BatchJobTuple.__init__(*args, **kwargs)
         self.done = False
         self.submitted = False
 
@@ -254,10 +257,25 @@ def execute_command(cmd, ignore_errors=False, direct_io=False, cwd=None, silent_
     log.debug("Running command: {}".format(jcmd))
     try:
         if direct_io:
-            pipe = Popen(cmd, cwd=cwd)
+            #python 2 to 3
+            #pipe = Popen(cmd, cwd=cwd)  
+            try:
+                pipe = Popen(cmd, cwd=cwd, encoding='latin-1')
+                stdout, stderr = pipe.communicate()
+            except UnicodeEncodeError:
+                pipe = Popen(cmd, cwd=cwd, encoding='utf8')
+                stdout, stderr = pipe.communicate()
+                
         else:
-            pipe = Popen(cmd, stdout=PIPE, stderr=PIPE, cwd=cwd)
-        stdout, stderr = pipe.communicate()
+            #python 2 to 3
+            #pipe = Popen(cmd, stdout=PIPE, stderr=PIPE, cwd=cwd)
+            try:
+                pipe = Popen(cmd, stdout=PIPE, stderr=PIPE, cwd=cwd, encoding='latin-1')
+                stdout, stderr = pipe.communicate()
+            except UnicodeEncodeError:
+                pipe = Popen(cmd, stdout=PIPE, stderr=PIPE, cwd=cwd, encoding='utf8')
+                stdout, stderr = pipe.communicate()
+
     except OSError:
         log.error("Error executing command {}!".format(jcmd))
         raise
