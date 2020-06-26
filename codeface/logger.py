@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 ## This file is part of Codeface. Codeface is free software: you can
 ## redistribute it and/or modify it under the terms of the GNU General Public
 ## License as published by the Free Software Foundation, version 2.
@@ -27,6 +29,7 @@ instead of the current handcoded configuration.
 import logging
 import os
 import multiprocessing
+import io
 from copy import copy
 
 DEVINFO_LEVEL = 15
@@ -45,7 +48,9 @@ def start_logfile(filename, level_string):
     Start logging to the file specified by *filename* using the log level
     specified in *level_string*.
     '''
-    logfile_handler = _get_log_handler(file(filename, 'w'))
+    # python 2 to 3 file() to open()
+    #logfile_handler = _get_log_handler(file(filename, 'w'))
+    logfile_handler = _get_log_handler(open(filename, 'w'))
     logfile_handler.setLevel(_loglevel_from_string(level_string))
     log.devinfo("Opened logfile '{}' with log level '{}'"
             "".format(filename, level_string))
@@ -124,11 +129,23 @@ def _get_log_handler(stream=None):
     handler = logging.StreamHandler(stream=stream)
     FORMAT = "%(asctime)s [$BOLD%(name)s$RESET] %(processName)s %(levelname)s: %(message)s"
     datefmt = '%Y-%m-%d %H:%M:%S'
+    # error in handler.stream.fileno()
+    
+    io_2 = io.StringIO()
+    if stream == io_2: 
+        print(stream.fileno())
+    
+    #if hasattr(handler.stream, "fileno") and os.isatty(handler.stream.fileno()):
+    try:
+        if hasattr(handler.stream, "fileno") and os.isatty(handler.stream.fileno()):
+            handler.setFormatter(_ColoredFormatter(_insert_seqs(FORMAT), datefmt=datefmt))
+        else:
+            handler.setFormatter(logging.Formatter(_remove_seqs(FORMAT), datefmt=datefmt))
 
-    if hasattr(handler.stream, "fileno") and os.isatty(handler.stream.fileno()):
-        handler.setFormatter(_ColoredFormatter(_insert_seqs(FORMAT), datefmt=datefmt))
-    else:
+    except io.UnsupportedOperation as e:
+        print(e, 'FIX ME FIX ME FIX ME')
         handler.setFormatter(logging.Formatter(_remove_seqs(FORMAT), datefmt=datefmt))
+        
     return handler
 
 # Initialize the logger that prints to the console.
