@@ -1,4 +1,5 @@
-#! /usr/bin/env python
+#!/usr/bin/env python3
+
 # This file is part of Codeface. Codeface is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
 # License as published by the Free Software Foundation, version 2.
@@ -17,7 +18,8 @@
 
 # Thin sql database wrapper
 
-import MySQLdb as mdb
+#import MySQLdb as mdb
+import MySQLdb as msc
 from datetime import datetime
 from logging import getLogger;
 from contextlib import contextmanager
@@ -29,7 +31,8 @@ log = getLogger(__name__)
 def _log_db_error(action, args=None):
     try:
         yield
-    except mdb.Error as e:
+    #except mdb.Error as e:
+    except msc.Error as e:
         if args:
             try:
                 action = action % args
@@ -46,16 +49,25 @@ class DBManager:
     def __init__(self, conf):
         try:
             self.con = None
-            self.con = mdb.Connection(host=conf["dbhost"],
+            # encoding handling?
+            #self.con = mdb.Connection(host=conf["dbhost"],
+            #                          port=conf["dbport"],
+            #                          user=conf["dbuser"],
+            #                          passwd=conf["dbpwd"],
+            #                          db=conf["dbname"])
+            self.con = msc.Connection(host=conf["dbhost"],
                                       port=conf["dbport"],
                                       user=conf["dbuser"],
                                       passwd=conf["dbpwd"],
-                                      db=conf["dbname"])
+                                      db=conf["dbname"],
+                                      charset='utf8',
+                                      use_unicode=True)
             log.debug(
                 "Establishing MySQL connection to "
                 "{c[dbuser]}@{c[dbhost]}:{c[dbport]}, DB '{c[dbname]}'"
                     .format(c=conf))
-        except mdb.Error as e:
+        #except mdb.Error as e:
+        except msc.Error as e:
             log.critical(
                 "Failed to establish MySQL connection to "
                 "{c[dbuser]}@{c[dbhost]}:{c[dbport]}, DB '{c[dbname]}'"
@@ -81,7 +93,8 @@ class DBManager:
                     else:
                         res = self.cur.execute(stmt, args)
                     return res
-                except mdb.OperationalError as dbe:
+                #except mdb.OperationalError as dbe:
+                except msc.OperationalError as dbe:
                     retryCount += 1
                     log.devinfo("DBE args: " + str(dbe.args))
                     if dbe.args[0] == 1213:  # Deadlock! retry...
@@ -394,7 +407,9 @@ class DBManager:
             previous_rev = None
             if len(tags) > 0:
                 previous_rev = tags[-1]
-            for rev, rc in zip(revs, rcs)[len(tags):]:
+            # python 2 to 3 
+            #for rev, rc in zip(revs, rcs)[len(tags):]:
+            for rev, rc in list(zip(revs, rcs))[len(tags):]:
                 self.doExecCommit("INSERT INTO release_timeline "
                                   "(type, tag, projectId) "
                                   "VALUES (%s, %s, %s)",
